@@ -12,7 +12,7 @@ export default function Interactive({ interactive, onComplete }) {
   const hook = useInteractive();
 
   const renderInteractive = () => {
-    const props = { ...interactive, onComplete: hook.markSolved, hook };
+    const props = { ...interactive, onComplete, hook };
     
     switch (interactive.type) {
       case 'tapmatch': return <TapMatch {...props} />;
@@ -25,8 +25,6 @@ export default function Interactive({ interactive, onComplete }) {
     }
   };
 
-  const showGuidedReveal = hook.attempts >= 3 && !hook.solved;
-
   return (
     <div className="bg-white rounded-3xl p-8 shadow-xl max-w-xl mx-auto">
       <div className="mb-6 text-center">
@@ -36,12 +34,6 @@ export default function Interactive({ interactive, onComplete }) {
       
       {renderInteractive()}
       
-      {showGuidedReveal && (
-        <div className="mt-4 p-3 bg-amber-50 rounded-xl text-sm text-amber-700">
-          Need help? Watch the solution reveal below, then continue.
-        </div>
-      )}
-      
       <div className="mt-8 flex justify-center gap-3">
         <Button variant="secondary" onClick={hook.reset}>Reset</Button>
         <Button 
@@ -49,7 +41,7 @@ export default function Interactive({ interactive, onComplete }) {
             if (!hook.solved) hook.markSolved(80);
             onComplete();
           }} 
-          disabled={!showGuidedReveal && !hook.solved}
+          disabled={false}
         >
           {hook.solved ? 'Continue to Quiz' : 'Skip to Quiz'}
         </Button>
