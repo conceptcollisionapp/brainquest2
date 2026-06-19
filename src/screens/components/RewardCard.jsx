@@ -2,9 +2,10 @@ import React from 'react';
 import Button from '../../components/Button.jsx';
 import Confetti from '../../components/Confetti.jsx';
 
-export default function RewardCard({ result, dayId, onContinue, passed = true, totalQuestions }) {
+export default function RewardCard({ result, dayId, onContinue, passed = true, totalQuestions = 10, passThreshold }) {
   const { rawScore, starsEarned } = result;
   const percentage = Math.round((rawScore / totalQuestions) * 100);
+  const threshold = passThreshold ?? Math.ceil(totalQuestions * 2 / 3);
 
   if (!passed) {
     return (
@@ -12,7 +13,7 @@ export default function RewardCard({ result, dayId, onContinue, passed = true, t
         <div className="text-6xl mb-4">😕</div>
         <h2 className="text-3xl font-bold mb-2">Not quite there yet</h2>
         <p className="text-xl text-[var(--color-muted)] mb-6">
-          You need at least 2 out of 3 correct to pass. Score: {rawScore}/{totalQuestions}
+          You need at least {threshold} out of {totalQuestions} correct to pass. Score: {rawScore}/{totalQuestions}
         </p>
         <Button onClick={onContinue}>Try Again</Button>
       </div>
